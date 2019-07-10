@@ -1,0 +1,293 @@
+Language Reference
+
+Basic syntax :--
+Types :--
+Variables :--
+Constants :--
+Expressions :--
+Operators :--
+
+Control Structures :--
+
+	declare :--
+		The declare construct is used to set execution directives for a block of code
+		it allows only 3 directives those are ticks ,strict_types and encoding 
+		
+		Syntax:
+			declare(ticks=1) {
+				//code here
+			}
+			
+		declare(ticks=1) :
+			entire script
+		enddeclare
+		
+		declare(ticks=1);
+		declare(strict_types=1);
+		declare(encoding = 'ISO-8859-15');
+		
+	
+	require :--
+		require is identical to include except upon failure it will also produce a fatal E_COMPILE_ERROR level error.
+	include :--
+		The include statement includes and evaluates the specified file.
+		Files are included based on the file path given or, if none is given, the include_path specified
+		If the file isn't found in the include_path, include will finally check in the calling script's own directory and the current working directory before failing.
+		The include construct will emit a warning if it cannot find a file;
+		all functions and classes defined in the included file have the global scope.
+		If "URL include wrappers" are enabled in PHP, you can specify the file to be included using a URL
+	require_once :--
+		The require_once statement is identical to require except PHP will check if the file has already been included, and if so, not include (require) it again.
+	include_once :--
+		The include_once statement includes and evaluates the specified file during the execution of the script. This is a behavior similar to the include statement, with the only difference being that if the code from a file has already been included, it will not be included again, and include_once returns TRUE. As the name suggests, the file will be included just once.
+	
+
+Functions :--
+	User-defined functions :--
+		function foo() {
+			//inside code
+		}
+		Any valid PHP code may appear inside a function, even other functions and class definitions
+		A valid function name starts with a letter or underscore, followed by any number of letters, numbers, or underscores
+		Function names are case-insensitive
+		All functions and classes in PHP have the global scope
+		PHP does not support function overloading, nor is it possible to undefine or redefine previously-declared functions
+	Function arguments :--
+		The arguments are evaluated from left to right.
+		PHP supports passing arguments by value (the default), passing by reference, and default argument values. Variable-length argument lists are also supported.
+		To have an argument to a function always passed by reference, prepend an ampersand (&) to the argument name in the function definition
+		The default value must be a constant expression, not a variable, a class member or a function call.
+		Defaults should be on the right side of any non-default arguments
+		Arguments that are passed by reference may have a default value
+		To specify a type declaration, the type name should be added before the parameter name.(Type declarations were also known as type hints in PHP 5)
+		Type hints  Class/interface name, self, array, callable, bool(boolean), float, int(integer), string, iterable(instanceof, Traversable, array), object
+		Declared types of reference parameters are checked on function entry, but not when the function returns
+		By default, PHP will coerce values of the wrong type into the expected scalar type if possible
+		In strict mode, only a variable of exact type of the type declaration will be accepted, or a TypeError will be thrown
+		To enable strict mode, the declare statement is used with the strict_types declaration    declare(strict_types=1);
+		
+		PHP has support for variable-length argument lists in user-defined functions. This is implemented using the ... token (The arguments will be passed into the given variable as an array)
+		You can also use ... when calling functions to unpack an array or Traversable variable or literal into the argument list
+		It is also possible to add a type hint before the ... token. If this is present, then all arguments captured by ... must be objects of the hinted class.
+		you may also pass variable arguments by reference by prefixing the ... with an ampersand (&).
+		
+		PHP 7 adds support for return type declarations. Similarly to argument type declarations, return type declarations specify the type of the value that will be returned from a function.
+		The same types are available for return type declarations as are available for argument type declarations.
+		
+		Strict typing also has an effect on return type declarations. In the default weak mode, returned values will be coerced to the correct type if they are not already of that type. In strong mode, the returned value must be of the correct type, otherwise a TypeError will be thrown.
+		
+		return values can be marked as nullable by prefixing the type name with a question mark(?).This signifies that the function returns either the specified type or NULL.
+		
+	Returning values :--
+		Values are returned by using the optional return statement.
+		Any type may be returned, including arrays and objects.
+		A function can not return multiple values, but similar results can be obtained by returning an array.
+		
+	Variable functions :--
+		PHP supports the concept of variable functions. This means that if a variable name has parentheses appended to it, PHP will look for a function with the same name as whatever the variable evaluates to, and will attempt to execute it. Among other things, this can be used to implement callbacks, function tables, and so forth.
+		
+		Variable functions won't work with language constructs such as echo, print, unset(), isset(), empty(), include, require 
+		Object methods can also be called with the variable functions syntax.
+			$funcname = "Variable";
+			$foo->$funcname(); 
+			
+		When calling static methods, the function call is stronger than the static property operator
+	Internal (built-in) functions :--
+		
+	Anonymous functions :--
+		Anonymous functions, also known as closures ,Allow the creation of functions which have no specified name
+		Anonymous functions are implemented using the Closure class.
+		Closures can also be used as the values of variables ( assigning methods to vars)
+		Closures may also inherit variables from the parent scope. Any such variables must be passed to the 'use' language construct
+		Closures can also accept regular arguments
+		The parent scope of a closure is the function in which the closure was declared
+		
+Classes and Objects :--
+
+	Introduction :--
+		 visibility, abstract and final classes and methods,magic methods, interfaces, cloning and typehinting.
+	The Basics :--
+		A class may contain its own constants, variables (called "properties"), and functions (called "methods")
+		The pseudo-variable $this is available when a method is called from within an object context
+		$this is a reference to the calling object 
+		calling a non-static method statically from an incompatible context results in $this being undefined inside the method
+		
+		To create an instance of a class, the new keyword must be used.
+		Classes should be defined before instantiation
+		
+		return new static; ==> creates class object
+		
+		Class properties and methods live in separate "namespaces", so it is possible to have a property and a method with the same name.
+		Referring to both a property and a method has the same notation, and whether a property will be accessed or a method will be called, solely depends on the context
+		calling an anonymous function which has been assigned to a property is not directly possible. Instead the property has to be assigned to a variable first.it is possible to call such a property directly by enclosing it in parentheses.
+		
+		$func = $obj->bar; //5.3
+		$func()
+		($obj->bar)() // 7.0
+		
+		A class can inherit the methods and properties of another class by using the keyword extends in the class declaration. It is not possible to extend multiple classes; a class can only inherit from one base class.
+		The inherited methods and properties can be overridden by redeclaring them with the same name defined in the parent class.
+		if the parent class has defined a method as final, that method may not be overridden
+		It is possible to access the overridden methods or static properties by referencing them with parent::
+		When overriding methods, the parameter signature should remain the same or PHP will generate an E_STRICT level error, but constructor allows overriding with different parameters.
+		
+		You can get a string containing the fully qualified name of the ClassName class by using ClassName::class
+		
+		Inside a class definition, $this refers to the current object, while  self  refers to the current class
+		Class names are case-insensitive
+		
+		stdClass is the default PHP object, stdClass is NOT a base class
+		PHP classes do not automatically inherit from any class. All classes are standalone, unless they explicitly extend another class
+		stdClass has no properties, methods or parent
+		It does not support magic methods, and implements no interfaces.
+		
+		private functions are not visible in an inherited class
+		
+	Properties :--
+		Class member variables are called "properties or "attributes" or "fields"
+		 public, protected, or private,
+		 Within class methods non-static properties may be accessed by using -> (Object Operator): $this->property
+		 Static properties are accessed by using the :: (Double Colon): self::$property
+		 The pseudo-variable $this is available inside any class method when that method is called from within an object context. $this is a reference to the calling object
+		 heredocs and nowdocs can be used in any static data context, including property declarations
+		 
+		 $this can be cast to array, But when doing  Public property names are not changed , Protected properties are prefixed with a space-padded '*', Private properties are prefixed with the space-padded class name
+		  
+	Class Constants :--
+	Autoloading Classes :--
+	Constructors and Destructors :--
+		__construct  a constructor method call this method on each newly-created object
+		Parent constructors are not called implicitly if the child class defines a constructor.
+		In order to run a parent constructor, a call to parent::__construct() within the child constructor is required
+		If the child does not define a constructor then it may be inherited from the parent class just like a normal class method
+		
+		
+		The destructor method will be called as soon as there are no other references to a particular object, or in any order during the shutdown sequence
+		Like constructors, parent destructors will not be called implicitly by the engine. In order to run a parent destructor, one would have to explicitly call parent::__destruct() in the destructor body. Also like constructors, a child class may inherit the parent's destructor if it does not implement one itself.
+		The destructor will be called even if script execution is stopped using exit()
+		
+	Visibility :--
+		Class properties must be defined as public, private, or protected. If declared using var, the property will be defined as public.
+		
+		Class members declared public can be accessed everywhere. Members declared protected can be accessed only within the class itself and by inheriting and parent classes. Members declared as private may only be accessed by the class that defines the member
+		class constants may be defined as public, private, or protected. Constants declared without any explicit visibility keyword are defined as public.
+		
+	Object Inheritance :--
+		 when you extend a class, the subclass inherits all of the public and protected methods from the parent class. Unless a class overrides those methods, they will retain their original functionality
+	Scope Resolution Operator (::) :--
+		The Scope Resolution Operator is a token that allows access to static, constant, and overridden properties or methods of a class.
+		When referencing these items from outside the class definition, use the name of the class.
+		
+		Three special keywords self, parent and static are used to access properties or methods from inside the class definition.
+	
+	Static Keyword :--
+		Declaring class properties or methods as static makes them accessible without needing an instantiation of the class
+		A property declared as static cannot be accessed with an instantiated class object (though a static method can)
+		the pseudo-variable $this is not available inside the method declared as static.
+		Static properties cannot be accessed through the object using the arrow operator ->.
+	Class Abstraction :--
+	Object Interfaces :--
+	Traits :--
+	Anonymous classes :--
+	Overloading :--
+	Object Iteration :--
+	Magic Methods :--
+	Final Keyword :--
+	Object Cloning :--
+	Comparing Objects :--
+	Type Hinting :--
+	Late Static Bindings :--
+	Objects and references :--
+	Object Serialization :--
+	OOP Changelog :--
+
+
+Namespaces :--
+Errors :--
+	Error Types
+		E_ERROR : Fatal run-time errors. 
+		E_WARNING : Run-time warnings 
+		E_PARSE : Compile-time parse errors
+		E_NOTICE : Run-time notices.
+		E_ALL: All errors and warnings
+	Which errors are reported and which are ignored is controlled by the error_reporting php.ini directive  or at runtime by calling error_reporting().
+	
+	In a development environment, you should always set error_reporting to E_ALL
+	display_errors controls whether the error is shown as part of the script's output (disabled in a production environment)
+	PHP can log errors when the log_errors directive is enabled.
+	
+	Error exceptions :
+		As with normal exceptions, these Error exceptions will bubble up until they reach the first matching catch block.
+		If there are no matching blocks, then any default exception handler installed with set_exception_handler() will be called,
+		and if there is no default exception handler, then the exception will be converted to a fatal error and will be handled like a traditional error.
+		
+		As the Error hierarchy does not inherit from Exception
+	
+	
+	Error related functions
+		trigger_error  : Generates a user-level error/warning/notice message
+		set_error_handler :  Sets a user-defined error handler function
+		error_reporting : Sets which PHP errors are reported
+		error_log : Send an error message to the defined error handling routines
+		
+Exceptions :--
+	Each try must have at least one corresponding catch or finally block.
+	Multiple catch blocks can be used to catch different classes of exceptions. 
+	Exceptions can be thrown (or re-thrown) within a catch block.
+	In PHP 7.1 and later, a catch block may specify multiple exceptions using the pipe (|) character.
+	Code within the finally block will always be executed after the try and catch blocks, regardless of whether an exception has been thrown, and before normal execution resumes
+Generators :--
+	Any function containing yield is a generator function
+	A generator is a function, which is the same as a normal function, except that instead of returning once, a generator can yield as many times as it needs to in order to provide the values to be iterated over.
+	When a generator function is called, a new object of the internal Generator class is returned.
+	When a generator function is called, it returns an object that can be iterated over.
+	When you iterate over that object (for instance, via a foreach loop), PHP will call the object's iteration methods each time it needs a value, then saves the state of the generator when the generator yields a value so that it can be resumed when the next value is required
+	
+	Yield:
+	a yield statement looks much like a return statement, except that instead of stopping execution of the function and returning, yield instead provides a value to the code looping over the generator and pauses execution of the generator function.
+	
+	Yield can be called without an argument to yield a NULL value with an automatic key
+	yielding a key/value pair in an expression context requires the yield statement to be parenthesised: $data = (yield $key => $value);
+	Generator functions are able to yield values by reference as well as by value , This is done by prepending an ampersand to the function name.
+	
+	
+Generator delegation via yield from :
+	generator delegation allows you to yield values from another generator, Traversable object, or array by using the yield from keyword
+	The outer generator will then yield all values from the inner generator, object, or array until that is no longer valid, after which execution will continue in the outer generator.
+	If a generator is used with yield from, the yield from expression will also return any value returned by the inner generator.
+	
+	some values may share a common key with another yield or yield from, which, upon insertion into an array, will overwrite former values with that key.
+	
+	
+References Explained :--
+Predefined Variables :--
+Predefined Exceptions :--
+Predefined Interfaces and Classes :--
+Context options and parameters :--
+Supported Protocols and Wrappers :--
+
+==========================================================================================================================================
+==========================================================================================================================================
+==========================================================================================================================================
+==========================================================================================================================================
+
+Callbacks / Callables
+Closure
+anonymous functions 
+
+Predefined Interfaces and Classes
+	Traversable
+	Iterator
+	IteratorAggregate
+	Throwable
+	ArrayAccess
+	Serializable
+	Closure
+	Generator
+	WeakReference
+	
+	
+difference between static and non-static properties
+	
+	
+https://www.cmuir.co.nz/post/php-keywords/declare-and-enddeclare/
