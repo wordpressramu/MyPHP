@@ -2,8 +2,84 @@ Language Reference
 
 Basic syntax :--
 Types :--
+	The type of a variable is not usually set by the programmer; rather, it is decided at runtime by PHP depending on the context in which that variable is used
+	
+	PHP supports ten primitive types.
+		Four scalar types:
+			boolean
+			integer
+			float 
+			string
+				single quoted
+				double quoted
+				heredoc syntax : heredoc syntax: <<<. After this operator, an identifier is provided, then a newline. The string itself follows, and then the same identifier again to close the quotation.
+					Ex: <<<EOT
+						testing heredoc
+						EOT
+				nowdoc syntax:
+					Nowdocs are to single-quoted strings what heredocs are to double-quoted strings. no parsing is done inside a nowdoc.
+					A nowdoc is identified with the same <<< sequence used for heredocs, but the identifier which follows is enclosed in single quotes, e.g. <<<'EOT'
+		Four compound types:
+			array
+				An array in PHP is actually an ordered map
+				A map is a type that associates values to keys
+				it can be treated as an array, list (vector), hash table (an implementation of a map), dictionary, collection, stack, queue,
+				
+				An array can be created using the array() language construct
+				
+				The key can either be an integer or a string. The value can be of any type.
+				The key is optional. If it is not specified, PHP will use the increment of the largest previously used integer key.
+				 
+				 Indexed arrays
+				 Associative Array
+				 
+			object
+				To create a new object, use the new statement to instantiate a class
+				 If a value of any other type is converted to an object, a new instance of the stdClass built-in class is created
+				 If the value was NULL, the new instance will be empty
+				 An array converts to an object with properties named by keys and corresponding values.
+				 For any other value, a member variable named scalar will contain the value. Ex : $obj = (object) 'ciao'; echo $obj->scalar;  
+				 
+			callable
+				Callback functions can not only be simple functions, but also object methods, including static class methods
+				anonymous functions can also be passed to a callback parameter
+			iterable
+				Iterable is a pseudo-type
+				Iterable can be used as a parameter type to indicate that a function requires a set of values
+				Parameters declared as iterable may use NULL or an array as a default value
+				Iterable can also be used as a return type to indicate a function will return an iterable value.
+				Functions declaring iterable as a return type may also be generators.
+		Two special types:
+			resource
+				A resource is a special variable, holding a reference to an external resource
+				As resource variables hold special handles to opened files, database connections, image canvas areas and the like
+			NULL
+		pseudo-types for readability reasons
+				you cannot use pseudo-types as typehints in your own custom functions.
+			mixed : mixed indicates that a parameter may accept multiple types
+			number : number indicates that a parameter can be either integer or float.
+			callback
+			array|object : array|object indicates that a parameter can be either array or object.
+			void : void as a return type means that the return value is useless. void in a parameter list means that the function doesn't accept any parameters. 
+		pseudo-variable $....
+			This variable name is used when a function can take an endless number of arguments.
+		
+	Data type conversion can do either cast the variable or use the settype() function on it.
+		
 Variables :--
+	The variable name is case-sensitive.
+	$this is a special variable that can't be assigned.
+	variables are always assigned by value
+	To assign by reference, simply prepend an ampersand (&) to the beginning of the variable which is being assigned (the source variable)
+	only named variables may be assigned by reference.
+	$GLOBALS array is an associative array
+	A static variable exists only in a local function scope, but it does not lose its value when program execution leaves this scope	
+	Superglobals: $GLOBALS , $_SERVER , $_GET ,$_POST , $_FILES , $_COOKIE, $_SESSION, $_REQUEST ,$_ENV
 Constants :--
+	A constant is case-sensitive by default
+	By convention, constant identifiers are always uppercase.
+	CONST value cannot change during the execution of the script 
+	scope of a constant is global
 Expressions :--
 Operators :--
 
@@ -185,21 +261,73 @@ Classes and Objects :--
 		A property declared as static cannot be accessed with an instantiated class object (though a static method can)
 		the pseudo-variable $this is not available inside the method declared as static.
 		Static properties cannot be accessed through the object using the arrow operator ->.
+	
 	Class Abstraction :--
+		Classes defined as abstract may not be instantiated, and any class that contains at least one abstract method must also be abstract
+		When inheriting from an abstract class, all methods marked abstract in the parent's class declaration must be defined by the child
+		if the abstract method is defined as protected, the function implementation must be defined as either protected or public, but not private in child class
+		if the child class defines an optional argument, where the abstract method's signature does not, there is no conflict in the signature.
+	
 	Object Interfaces :--
+		All methods declared in an interface must be public; this is the nature of an interface.
+		it is possible to declare a constructor in an interface
+		Interfaces are defined in the same way as a class, but with the interface keyword replacing the class keyword and without any of the methods having their contents defined.
+		To implement an interface, the implements operator is used.
+		All methods in the interface must be implemented within a class
+		Classes may implement more than one interface
+		Interfaces can be extended like classes using the extends operator.
+		It's possible for interfaces to have constants
+		Interface constants work exactly like class constants except they cannot be overridden by a class/interface that inherits them.
+	
 	Traits :--
+	
 	Anonymous classes :--
+		Anonymous classes can pass arguments through to their constructors, extend other classes, implement interfaces, and use traits just like a normal class 
+	
 	Overloading :--
-	Object Iteration :--
+		All overloading methods must be defined as public.
+		Overloading in PHP provides means to dynamically create properties and methods
+		These dynamic entities are processed via magic methods
+		The overloading methods are invoked when interacting with properties or methods that have not been declared or are not visible in the current scope.
+		Property overloading only works in object context. These magic methods will not be triggered in static context
+		
+		Property overloading
+			__set() is run when writing data to inaccessible (protected or private) or non-existing properties
+			__get() is utilized for reading data from inaccessible (protected or private) or non-existing properties.
+			__isset() is triggered by calling isset() or empty() on inaccessible (protected or private) or non-existing properties.
+			__unset() is invoked when unset() is used on inaccessible (protected or private) or non-existing properties.
+			
+		Method  overloading
+			__call() is triggered when invoking inaccessible methods in an object context
+			__callStatic() is triggered when invoking inaccessible methods in a static context.
+		
+		
+	Object Iteration :--	
+		generators are alternative to Iterators
+	
 	Magic Methods :--
+		The function names __construct(), __destruct(), __call(), __callStatic(), __get(), __set(), __isset(), __unset(), __sleep(), __wakeup(), __toString(), __invoke(), __set_state(), __clone() and __debugInfo() are magical in PHP classes
+		All magic methods MUST be declared as public
+		
 	Final Keyword :--
+		 final keyword, prevents child classes from overriding a method by prefixing the definition with final. 
+		 If the class itself is being defined final then it cannot be extended.
+		 
+		 Properties and constants cannot be declared final, only classes and methods may be declared as final.
+		 
 	Object Cloning :--
+		An object copy is created by using the clone keyword
+		When an object is cloned, PHP will perform a shallow copy of all of the object's properties. Any properties that are references to other variables will remain references.
+		
 	Comparing Objects :--
-	Type Hinting :--
+		When using the comparison operator (==),object variables are compared in a simple manner, namely: Two object instances are equal if they have the same attributes and values (values are compared with ==), and are instances of the same class.
+		
+		When using the identity operator (===), object variables are identical if and only if they refer to the same instance of the same class
+			
 	Late Static Bindings :--
 	Objects and references :--
 	Object Serialization :--
-	OOP Changelog :--
+	
 
 
 Namespaces :--
@@ -291,3 +419,5 @@ difference between static and non-static properties
 	
 	
 https://www.cmuir.co.nz/post/php-keywords/declare-and-enddeclare/
+
+https://github.com/brookshi/awesome-typescript-projects
