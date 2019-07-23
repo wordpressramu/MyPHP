@@ -1,0 +1,225 @@
+Theme:
+A theme is a component of Magento application which provides a consistent look and feel (visual design) for entire Magento application area . 
+It uses a combination of custom templates, layouts, styles or images.
+
+Step by Step Guide for Magento 2 Theme Development & Customization :
+	1).Disable Cache
+	2).Set Developer Mode
+	3).Create Theme
+		a).Create a directory for the theme
+			/app/design/frontend/<vendor>/<themename>
+		b).Add a declaration for theme
+			Create theme.xml file
+		c).Add a composer.json file
+			Add a file composer.json which is optional
+		d).Add registration.php
+			add a file registration.php in your theme directory
+		e).Create directories for CSS, JavaScript, images, and fonts
+				\web
+					\css
+						\source
+					\fonts
+					\images
+					\js
+		f).Configure Images
+			etc\view.xml
+		g).Setup theme logo
+			efault format and name of a logo image is logo.svg.
+			\magento_theme\layout\default.xml
+		h).Customize theme layout
+			a).Base layouts: Layout files of modules 
+				(It’s not recommended to edit in these layout files if it’s not your custom module.)
+				Page configuration and generic layout files , ex: Magento_Catalog/view/frontend/layout
+				Page layout files ex: Magento_Catalog/view/frontend/page_layout
+			b).Theme layouts: Layout files of themes.
+				Page configuration and generic layout files : 
+					app/design/frontend/<vendor>/<themename>/Magento_Catalog/layout
+				Page layout files
+					app/design/frontend/<vendor>/<themename>/Magento_Catalog/page_layout
+					
+			Create a Theme Extending File
+			if you want to customize layout of Magento_Catalog/view/frontend/layout/catalog_product_view.xml, you can add a layout file with same name in your custom theme:app/design/frontend/<vendor>/<themename>/Magento_Catalog/layout/catalog_product_view.xml
+		i).Configure your theme in the Admin panel
+			To apply theme go to Admin->Content->Design->Configuration->Click Edit 
+		j). php bin/magento setup:upgrade
+			php bin/magento setup:static-content:deploy
+			
+Note:  For overriding page layout files, always use your directory name page_layout instead of layout.
+	   Do not change block name or alias.
+	   Do not change the page type parent handle.
+
+In Magento 2, each module has a default layout which can be overwritten and expanded by another layout.
+<catalog_product_view> – is a handle according to module and controller action
+
+
+To create a layout file in Magento 2 theme, follow the rules:
+	Each layout file calls for one handle and others called
+	Name of layout file is the name of handle layout. Eg: checkout_cart_index
+	Layout file called is in layout folder
+
+	
+The order to read and process layout files is described as below:
+	If layout file belongs to different module, the order to run will be: independent module, dependent module and then alphabetical order of file name.
+	If file belongs to the same module, the order will be alphabetical order of file name
+
+	
+The steps to proceed layout of the system:
+	Read the group of all default layout files (base), including dependent ones
+	Determine the order of inherited or overwritten files
+	Add all expanded layout, replace layout in base, get in parent layout, replace parent layout files which are overwritten by the child ones
+	
+	
+Layout/Block Areas:
+	Container: The area to distribute page elements
+	Block: the area where default block elements of Magento are in container
+
+	
+Magento uses blocks to differentiate between the various components of its functionality.
+A content block displays the generated HTML .Content blocks are used within Magento structural blocks
+	Examples of content blocks:Product listings, Category listings,Site navigation links,Callouts ,The mini cart
+
+Simply, content blocks   define "what type of content appears within any given page or view within Magento".
+the blocks are available in a visual hierarchy from a page
+
+
+Magento allows designers to create new themes based on the basic Blank theme.
+The fallback system is a theme's inheritance mechanism and allows the developers to create only the files that are necessary for customization.
+The inheritance works like an override system
+We can create new themes by using the existent ones (parents) and by replacing (overriding) some existing file with the same name, but in our specific theme folder (child).
+you have a specific CSS available in the <theme_dir>/web/css folder. If you delete this file, the fallback system will search the file in the <parent_theme_dir>/web/css folder:
+
+
+
+Custom Variables:
+	Custom Variables are pieces of code that have specific values.
+	Custom Variable structure is {{config path="web/unsecure/base_url"}}. 
+	variable in lowercase and with no spaces ex: dev_name
+	Usage: {{CustomVar code="dev_name"}}
+
+
+Magento 2 works with two grpup of view files
+	Static view : images, JavaScript, and CSS 
+	Dynamic view :.less,templates and layouts files.
+
+The Magento cache system manages the following types of cache:
+	Config: Contains all the settings of stored modules
+	Layout: Contains the build page layouts
+	HTML Block: Contains the compilation of HTML fragments (blocks)
+	Collections Date: Stores database queries
+	Data Definition Language: Stores information about the database schema
+	Entity attributes value (EAV): Contains metadata values defined in your Magento 2 admin panel, for example, name, price, and sku
+	Page cache: Generates caching of all HTML pages rendered by Magento 2
+	Reflection: Removes the dependency of the WebAPI module of the Customer module
+	Translations: Generates caching for all system translation files
+	Integration Configuration: Compiles the integration system
+	Integration API Configuration: Compiles integrations between APIs
+	Web Services Configuration: Contains all the reference settings to the web service system
+
+
+Each element's position has a specific role in rendering the layout. The controller specifies the rendering of each block according to their respective models and visualization layers:
+
+The Magento 2 layout system, defined by XML files, is responsible for manipulating elements and the behavior of each block or page to be rendered by creating parameters to feed the system.
+Layout files influence the behavior and performance of the View layer when the rendering happens.
+
+
+The layout layer is divided into :
+	Page layout: 
+		This is responsible for declaring the general structure of the page, for example, a three-column layout.
+		It operates mainly within the <body> element at the time of page rendering.
+	Page configuration: 
+		This is responsible for reporting meta information, content types, and structure information.
+		It operates mainly within the <html>, <head>, and <body> elements at the time of page rendering.
+	Generic layout: 
+		This has the same powers as page configuration but is used for AJAX requests and HTML snippets.
+
+Magento Modes:
+	Default mode: 
+		This is the way that Magento 2 operates normally. 
+		Errors are never shown to the user, and the static files are cached.
+		This mode is good if the Magento system works on only one server without the settings changing.
+		The default mode,  is not optimized for a  production environment.
+	Production mode: 
+		This is ideal for deployment in a production environment. 
+		Errors and exceptions are not shown to the user and static files are generated in the cache system, prioritizing system performance.
+	Developer mode: 
+		In this mode, static files are not cached, and system errors and exceptions are displayed to users. 
+		In this mode, there is no need to manage the external Internet traffic.
+		For development purposes, developer mode will be used 
+		
+Theme.xml configures the theme name, parent theme name, and preview image
+
+when we activate the new theme, Magento processes the static files and copies the static files to the pub/static directory. This occurs because the static files can be cached by Magento and the correct directory for this is the pub directory. So, we need to create the web directory so Magento recognize the files as static files.
+
+
+Magento 2 provides two compile options for the LESS technology
+	Server-Side compilation LESS: it is performed by the server using the LESS PHP library. It is suitable for production environments.
+	Client-Side compilation LESS: This is the compilation made by the client machine via the browser using the native less.js library. It is suitable for nonproduction environments.
+
+Magento UI library is based on the LESS preprocessor
+	
+	Magento UI library is located in the directory <magento_root>/lib/web/css/source/lib
+	
+	actions-toolbar: Includes a set of actions on a page, such as submit buttons and links to navigate the page
+	breadcrumbs: Allows users to keep track of their location within the website 
+	buttons: A set of different buttons to use in your project
+	dropdowns: A set of drop-downs to use in your project
+	forms: Customize your forms using the mixins and by configuring the global variables
+	icons: Can be added to any HTML tag, and represented by fonts, images, or sprites
+	layout: Provides mixins for flexible page layout customization
+	loaders: Provides an animation while the page is loading
+	messages: Provides four types of messages: Info, warning, error, and success
+	pagination: Display numbers of the page
+	popups: Implements a popup to use in your project
+	ratings: Uses font icons as rate symbols
+	sections: Uses tabs and accordions to separate the content in sections
+	tables: Provides customization options for the tables cells
+	tooltips: Provides four tooltips types: Top, bottom, left, and right
+	typography: Provides mixins for typography styling
+	global variables: You can consult the list of global variables to use in your project
+
+	
+-------https://blog.magestore.com/magento-2-theme-development/
+-------https://www.icecubedigital.com/blog/magento-2-theme-development-customization-step-by-step-guide/
+-------https://www.magestore.com/magento-2-tutorial/magento-2-theme-create-sample-custome-theme/
+		Magento 2 Developer’s Guide 
+		Magento 2 Theme Design
+		
+		
+
+Directory Structure in Magento 2 Theme			
+/app/design/frontend/<vendor>/<themename>/theme.xml
+/app/design/frontend/<vendor>/<themename>/registration.php
+/app/design/frontend/<vendor>/<themename>/composer.json
+/app/design/frontend/<vendor>/<themename>/media
+/app/design/frontend/<vendor>/<themename>/media/theme-image.jpg
+/app/design/frontend/<vendor>/<themename>/web
+/app/design/frontend/<vendor>/<themename>/web/css
+/app/design/frontend/<vendor>/<themename>/web/css/source
+/app/design/frontend/<vendor>/<themename>/web/css/fonts
+/app/design/frontend/<vendor>/<themename>/web/css/images
+/app/design/frontend/<vendor>/<themename>/web/css/js
+/app/design/frontend/<vendor>/<themename>/etc
+/app/design/frontend/<vendor>/<themename>/etc/view.xml
+/app/design/frontend/<vendor>/<themename>/Magento_Theme
+/app/design/frontend/<vendor>/<themename>/Magento_Theme/layout
+/app/design/frontend/<vendor>/<themename>/Magento_Theme/layout/default.xml
+
+
+
+
+The simplest Magento website consists of a store and store view 
+
+One store  can have one or more store views
+
+Website
+	Store 1
+	Store 2
+	Store 3
+	
+Example: 
+	Packtpub.com 
+		Bookstore
+		Magstore
+		MediaStore
+		
+	
