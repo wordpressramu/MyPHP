@@ -1,0 +1,30 @@
+DRY : Don't Repeat Yourself
+YAGNI : You Aren’t Gonna Need It
+KISS : Keep It Simple Stupid
+SOLID :
+                S – Single Responsibility Principle
+                O – Open-Closed Principle
+                L – Liskov Substitution Principle
+                I – Interface Segregation Principle
+                D – Dependency Inversion Principle
+GRASP : General Responsibility Assignment Software Principles
+
+TDD:  Test Driven Development
+ATDD Acceptance Test Driven Development
+BDD:  Behavior Driven Development
+PDD: Prototype-Driven Development
+FDD  Feature Driven Development
+BDUF : Big Design Up Front
+SOC – Separation of Concerns
+
+
+
+LBYL: Look Before You Leap. 
+EAFP: Easier to Ask Forgiveness than Permission. 
+Duck typing  :
+
+
+
+TDD is a design technique for programmers based on unit test first.
+BDD is a specification technique based on user stories and test scenarios.
+FDD is a development methodology based on object model, feature list, dynamic feature teams, and milestones.
