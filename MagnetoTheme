@@ -177,6 +177,85 @@ Magento UI library is based on the LESS preprocessor
 	typography: Provides mixins for typography styling
 	global variables: You can consult the list of global variables to use in your project
 
+
+	
+*********************
+Magento 2 Custom CMS page layout:
+	https://inchoo.net/magento-2/magento-2-custom-cms-page-layout/
+	https://magento.stackexchange.com/questions/174048/magento2-add-a-new-page-layout
+		
+	There are two files needed to create custom layout page
+		app/design/frontend/_YOUR_VENDOR/_YOUR_THEME_/Magento_Theme/layouts.xml
+		app/design/frontend/_YOUR_VENDOR_/_YOUR_THEME_/Magento_Theme/page_layout/test.xml
+		
+		
+Magento provide following layout as default :-
+
+-Empty
+-1 column
+-2 columns with left bar
+-2 columns with right bar
+-3 columns
+	
+	There are two files needed to create custom layout page
+	1 – Create Namespace/Module/view/frontend/layouts.xml this file registered custom layout
+	2 - Create Namespace/Module/view/frontend/page_layout/test.xml this file to manage design your layout page.
+	
+	
+	There is a special layout file name default.xml which will be applied for all the page in it’s area. 
+	Otherwhile, the layout file will have name as format: {router_id}_{controller_name}_{action_name}.xml.
+	
+*********************
+https://www.mageplaza.com/devdocs/how-use-plugin-preference-rewrite-block-model-controller-helper-magento-2.html
+https://magento.stackexchange.com/questions/102260/find-out-the-name-for-a-referenceblock-in-magento-2
+https://www.pierrefay.com/magento2-training/overloading-rewrite-class.html
+https://inchoo.net/magento-2/overriding-classes-magento-2/
+https://www.letsknowit.com/magento2-questions
+
+You can OVERRIDE the below sections using Plugins, Prefreces, Events & Observers
+BLOCK OVERRIDE
+MODLE OVERRIDE
+CONTROLLER OVERRIDE
+HELPER OVERRIDE
+
+
+
+As in Magento 1, only one preference (rewrite) can be active for a class at one time unless you chain them manually (such that MyClassB extends OtherClassB, and OtherClassB extends ClassA).
+
+A plugin allows you to execute code before, around, or after methods from the class you're hooking onto. Your plugin class does not replace the target class, and it is not an instance of it. You just have methods before{method}, around{method}, after{method} which get executed at the appropriate time in respect to {method} on the target class.
+
+Since plugins do not replace the target class, any number of plugins can be active on a class simultaneously. Magento just executes them one after another based on the sortOrder parameter in your XML.
+
+
+Preference is used to specify the default implementation of an interface.
+Preference is used for overriding class
+
+Plugin is used for adding functionality before, after and around methods.
+Plugin ( Interceptor ) is used to extend the behavior of a public method of another class.
+
+Preference : If there is more than one class that implements an interface, then it is important to specify the default one of all the implemented classes. This is done through the preference node in the dependency injection file ( di.xml ).
+
+Plugin(Interceptor) :
+
+Say, a class A has method methodA which needs an extended functionality. Then, this is achieved through Plugins by creating class APlugin without modifying the original class A. Class APlugin has methods that runs before, after or around the required method.
+
+
+Plugins Limitations
+Plugins can not be used on following:
+	Final methods
+	Final classes
+	Non-public methods
+	Class methods (such as static methods)
+	__construct
+	Virtual types
+	Objects that are instantiated before Magento\Framework\Interception is bootstrapped
+****************************************************
+****************************************************
+****************************************************
+****************************************************
+
+
+
 	
 -------https://blog.magestore.com/magento-2-theme-development/
 -------https://www.icecubedigital.com/blog/magento-2-theme-development-customization-step-by-step-guide/
