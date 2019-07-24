@@ -8,3 +8,8 @@ php bin/magento setup:config:set --page-cache=redis --page-cache-redis-server=12
 
 
 https://github.com/microsoftarchive/redis/releases
+
+
+change the below file for windows machines
+\vendor\magento\framework\View\Element\Template\File\validator.php ====>function isPathInDirectories
+$realPath = str_replace('\\', '/', $this->fileDriver->getRealPath($path));
