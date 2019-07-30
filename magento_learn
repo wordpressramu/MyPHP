@@ -1,0 +1,28 @@
+Magento Areas
+Magento Arch Layers
+DI
+Preferences
+Plugins (before, after,around), plugin sort order
+Events and Observers
+Argument Types (String,number, Array, Objecyt)
+Types
+Virtual Types
+
+
+Services
+
+Crontabs
+
+proxies
+Cli commands
+Request flow / Routing
+Routing types
+Response Types
+
+ACL
+Config
+Resources
+New menu
+Admin Grids
+Edit/Delete
+Save admin grid
