@@ -1,0 +1,272 @@
+What is the difference between EAV and flat model in Magento?
+	EAV is more of a normalized form of the database model.Every column value is being stored in its respective data type table,developer needs to join multiple tables to get the product details,
+	Flat model utilizes a single table and It is not normalized
+	
+How many types of sessions are available in Magento?
+	There are two types of sessions being used, customer and checkout sessions.
+	customer related data is locked with customer session 
+	data related to order and quotes are stored in the checkout session
+	
+	EAV: stands for Entity Attribute Value, is a technique which allows you to add unlimited columns to your table virtually
+	Entity (E): Entity actually refers to data item
+	Attribute (A): Attribute refers to the different attributes of the Entity.
+	Value (V): Value refers to the actual value of the attribute of the entity
+	
+What are the different ways of enhancing the performance of Magento
+	Disable any unused modules
+	Enable Magento caching
+	Optimize images
+	Disable Magento log
+	Combine external CSS/JS into a single file
+	MySQL query caching
+	Enable gzip compression
+	
+	
+Which Class Magento 2 Helper Extend?
+	Magento Framework App Helper AbstractHelper
+	
+What Is The Difference Between Cache:clean And Cache:flush?
+	cache:clean deletes all enabled cache related to magento 
+	cache:flush deletes the whole cache storage, whether its magento cache or any third party cache  (whether enabled or disabled)
+	
+	
+What Is Resource Attribute For Admin Menu Item?
+	Resource attribute defines the ACL rule, that a user must have in order to access this Menu Item.
+	
+
+	
+Dependency injection
+Object manager
+	The ObjectManager is a Magento service class that instantiates objects at the beginning of the bootstrapping process
+	object manager is responsible for the creation of all the objects, 
+	ObjectManager is the class responsible for instantiating objects in the Magento application
+	It has three methods two of them are responsible for the creation of the objects get() and create()
+		get is like Mage::getSingleton(“ClassName”) and 
+		create is like Mage::getModel(“ClassName”) , 
+		get creates sharable object and create will create new objects .
+	
+	Injection types 
+		Constructor injection
+		Method injection
+	Dependency types
+		Injectable :Injectable objects are singleton service objects obtained through dependency injection. The object manager uses the configuration in the di.xml file to create these objects and inject them into constructors
+		Newable/non-injectable : Newable, or non-injectable, objects are objects that cannot be injected. 
+
+Factories
+	Factories are service classes that instantiate non-injectable classes,
+	Always use factories for non-injectable objects
+	They create a layer of abstraction between the ObjectManager and business code.
+	
+	The Factory class name is the name of Model class and append with the Factory
+	Whenever Magento’s object manager encounters a class name that ends in the word ‘Factory’, it will automatically generate the Factory class in the var/generation folder if the class does not already exist. 
+	There are three types of classes that are generated in magento2, these classes are generated in the folder var/generation in magento2 root folder
+		Factory classes
+		Interceptor classes
+		Proxy Classes
+	Factories follow the naming convention <class-type>Factory where <class-type> is the name of the class the factory instantiates.
+	There is two ways of creating its object without using object Manager:
+		The first method is to pass the class object in the constructor, but this method will always create shared objects. It will not create new object
+		If you want to use new object of this class without using object manager , Append "Factory" word to class example
+			public function __construct(
+				Webkul\MagentoCodeGeneration\Model\MyModelFactory $myModelFactory
+			){
+				$this->_myModel = $myModelFactory->create();
+			}
+	You can get the singleton instance of a factory for a specific model using dependency injection.
+	
+Compiling dependencies
+	Magento uses its code compiler tool to collect all class dependency information and stores it in files. 
+	During the class creation process, the object manager uses this information to create concrete objects in the application.
+	Service classes that do not exist in the codebase, such as proxies, factories, and interceptors that are declared in code or in a configuration, are generated with the help of the compiler.
+	
+
+Commands	
+	php bin/magento cache:enable	
+	php bin/magento module:enable NameSpace_ModuleName
+	
+	
+When Should We Use a Repository and Factory in Magento 2 ?
+	"A repository object is responsible for reading and writing your object information to an object store"
+	We have to save model using Repository only.For saving model, always use Repository to save any entity, if factory model is used for saving model, it deletes all non-system eav attributes related to that entity
+	Factory Model in Magento 2 hold very limited data. Repository Model contains all data
+	For loading model purpose, Repository are best option to get model using getById() method
+
+What is the use of pagefactory in Magento 2?
+	Pagefactory is used to initialize the layout.
+	
+	
+	
+Proxies:
+	Proxies works as surrogate(means to act on behalf of others) 
+	in programming proxies are classes that can be used in place of any other class, and in magento2 proxies are used in place resource hungry classes
+	
+	proxy classes are generated automatically by magento2 code generator. These classes are genrated in two circumstances :	
+		when you will execute php bin/magento setup:di:compile  it will check all the di.xml files of all the modules installed in magento2 and if it encounters a class named Proxy, and it does not exist, then it will generate it automatically with same namespace inside ver/generation folder in the magento2 root 
+		
+	
+	
+	There are many types of dependency injection but the best one is constructor injection and method injection and magento2 uses both of them.
+	
+	There is problem with constructor injection, constructor injection says if you want to use any other class object in your class, don’t instantiate it inside the class, inject the object to the constructor and then use the object in the class, so when your class will be instantiated all the dependencies injected in your class constructor will also get instantiated, and it will trigger a chain reaction of object creation, this can really slow down the process, so to stop chiain reaction of object creation magento2 uses proxy design pattern
+	
+plugin system.(Interceptor pattern )
+	Interceptor design pattern also used in magento2 to solve the problem of customization
+	An interceptor class is generated when it encounters a plugin declaration in the di.xml file
+	
+Dependency
+	Dependency simply means that something is dependent on something, like you are dependent on your parents 
+	in the same way in programming if we create a class it can be dependent on the objects those are created inside the class
+Injection	
+	Injection simply means to provide something or to inject something by a third person.
+Dependency Injection	
+	Dependency Injection means to remove the direct dependency of the objects with class and use a third class to create objects for that class which is ObjectManager in Magento2.
+	
+	
+Repositories:	
+	
+	Repositories provide a way to access and manipulate the data from and into database, web services or any other means, in simple words you can say repositories acts as an API for the third party developers to access and work with the complex data of your extension
+	
+	It works as an intermediator between the data access and data accessor ,It centralizes all the data access logic for the module to one place
+	repositories can be easily converted to web services, so you do not need to write web services API again.
+	
+	
+============================================================
+============================================================
+============================================================
+
+https://www.dckap.com/blog/magento-2-plugin-and-preference/
+https://kiwee.eu/code-customization-magento-2/
+https://webkul.com/blog/magento2-code-generation-and-factory-design-pattern/
+
+preferences
+	Using a preference, you can tell the ObjectManager to swap one class with another.
+	Instead of having classes depend on other classes, classes should depend on interfaces. And next, the ObjectManager uses preferences to map an interface to an actual class. This allows for loose coupling
+	
+	Once the core defines a preference for an interface, you can also rewrite this preference into yet something else. Ex
+		the PSR logger interface in the core is mapped to a Magento version of Monolog. But you can swap out Monolog 
+		for another PSR-compliant logger simply by creating a new preference, that overrides the original preference.
+		
+		This sounds cool but actually leads to conflicts quickly.As soon as multiple extensions decide to rewrite the same preference, the last preference will win, leading to a bug in the extension doing the first preference override
+	Preference should be used only if the whole core class/interface implementation should be substituted with custom one	
+		
+Plugins
+	Any public method can be extended upon using this plugin/interceptor logic.
+	Customizations should be done using plugins for public methods/classes marked with @api annotation (stable public API) whenever possible.
+	
+	
+Plugins can modify only public methods while observers can modify private, protected as well.
+There is sort order for plugins but there is no sort order for observers.
+You can add observer only to the events that are already dispatched in Magento. Plugins are more flexible here.
+
+If your functionality fully replace the core functionality then you may use preferences.
+If you want add the functionality to the base or partially replace some class method then please use plugins
+
+
+In order to modify or improve any available core functionality, we end up overriding the core classes and methods. there are several ways to override the classes. Plugins & Preferences plays a major role in overriding existing functionality in Magento 2.
+
+Plugins do not override the class. It instead hooks into the respective methods of the class that we want to modify the business logic
+Plugins mostly avoid the conflicts that arise when overriding the classes
+
+To change parameters and to execute some logic prior, beforeMethodName() will be used.
+In order to change the result, afterMethodName() will be used.
+
+Interceptors are responsible for executing the plugins in the defined manner 
+Interceptor files are generated in /var/generation directory
+For example, check \var\generation\Magento\Catalog\Model\Product\Interceptor::getName() method. This interceptor method is responsible for executing all the registered plugins on the observing class methods in the specified sort order.
+
+
+
+Preferences:
+Preferences are similar to class rewrites in Magento 1. It is equivalent to saying “whenever the code asks for ‘Code A’ give ‘Code B’. Apart from this you can add or modify on top of Class B.
+<preference for="Magento\Catalog\Model\Product" 
+			type="VendorName\ModuleName\Model\Product" />
+
+	Whenever any class requests an instance of Class A, it will be provided with Class B instance.Basically, Class B comprises the business logic of Class A, which may be extended or modified.
+	
+	<preference for="Psr\Log\LoggerInterface" type="Magento\Framework\Logger\Monolog"/>
+	In this example, Magento\Framework\Logger\Monolog is the default implementation class for the Psr\Log\LoggerInterface
+	
+Both Plugins and Preferences are helpful in overriding the classes
+plugins do not override the class logically instead it hooks our logic into the available classes.
+
+So, to modify or extend any existing business logic, it is better to use the plugins
+
+Events:
+To execute custom code by an event trigger you need to create an observer and attach it to the event needed. 
+To define an observer you create a class in the <moduleDir>/Observer directory.
+The class needs to implement Magento\Framework\Event\ObserverInterface and define its execute() method:
+Attach this observer to an event. This is done in the <moduleDir>/etc/events.xml or <moduleDir>/etc/<area>/events.xml files.
+
+Custom events:
+we define custom events in our code. for this we need to inject an event manager into our class
+
+
+Virtual Types:
+	 The di.xml supports for two types of node which are a node type and a node virtualtype
+	 The virtual tape allows inserting different dependencies into the existing classes but not making any change to other classes
+	 Creating virtualtype in Magento 2 means creating a sub-class for an existing class
+
+	 
+	 widget 
+
+
+Each module can have its own di.xml files: 
+	global <moduleDir>/etc/di.xml 
+	area-specific <moduleDir>/etc/<area>/di.xml. 
+	There is also one initial file app/etc/di.xml which is loaded by Magento first. 
+	
+In Magento 2 all classes are defined by their corresponding interfaces in the di.xml files
+
+
+Magento cron task
+	Magento cronjob is responsible for sending newsletters, updating catalogue price rules and much more.It can be also used for scheduling tasks within custom modules.
+	Define in MyModule/etc/config.xml
+	
+=============================================================
+=============================================================
+=============================================================
+http://code.vky.co.in/magento-2-module-creator/
+https://devdocs.magento.com/guides/v2.3/extension-dev-guide/plugins.html
+Plugin :
+	A plugin, or interceptor, is a class that modifies the behavior of public class functions by intercepting a function call and running code before, after, or around that function call. This allows you to substitute or extend the behavior of original, public methods for any class or interface
+	
+	Your Plugin class implementation changes the behavior of a class function, but it does not change the class itself.
+	Magento calls these interceptors sequentially according to a configured sort order, so they do not conflict with one another.
+	
+	The di.xml file in your module declares a plugin for a class object
+	
+	By applying code before, after, or around a public method, a plugin extends or modifies that method’s behavior
+	
+	Before Method : 
+		Magento runs all before methods ahead of the call to an observed method. These methods must have the same name as the observed method with ‘before’ as the prefix.
+		You can use before methods to change the arguments of an observed method by returning a modified argument. If there is more than one argument, the method should return an array of those arguments. If the method does not change the argument for the observed method, it should return null
+	After Method :
+		Magento runs all after methods following the completion of the observed method. Magento requires these methods have a return value and they must have the same name as the observed method with ‘after’ as the prefix.
+		You can use these methods to change the result of an observed method by modifying the original result and returning it at the end of the method
+		Use after method plugins if you require arguments for replacing or altering function results.
+	Around methods
+		Magento runs the code in around methods before and after their observed methods.
+		Using these methods allow you to override an observed method.
+		Around methods must have the same name as the observed method with ‘around’ as the prefix.
+		Before the list of the original method’s arguments, around methods receive a callable that will allow a call to the next method in the chain
+		
+		
+	Before the execution of the observed method, Magento will execute plugins from lowest to greatest sortOrder.
+		Before Method
+		Around Method
+		After Method
+		
+	Plugins Limitations
+
+		Final methods
+		Final classes
+		Non-public methods
+		Class methods (such as static methods)
+		__construct
+		Virtual types
+		Objects that are instantiated before Magento\Framework\Interception is bootstrapped
+		
+		
+		
+Virtual Types
+	A virtual type allows you to change the arguments of a specific injectable dependency and change the behavior of a particular class. 
