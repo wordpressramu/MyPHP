@@ -1,0 +1,23 @@
+Request Flow:
+	In Magento 1, both the front end and back end configuration files will be loaded for each request. But in Magento 2, only the related configuration files of that area will be loaded
+	
+	
+	Step 1: Request hits index.php in root folder
+	step 2 : index.php calls static create() method of bootstrap class to create objectmanagerfactory and bootstrap objects.
+	step 3: index.php calls createApplication() method of bootstrap object which in turn will initiate ObjectManager using objectManagerFactory 
+			Then, application instance gets created using objectManager and returned to index.php.
+	step 4: index.php calls run() method of bootstrap object to run the application, which in turn will call launch() method of application object
+	step 5: HTTP Application instance does initial routing. It takes first part of the URL to find out which area should be loaded (admin/frontend)
+			When the area is defined, configuration for that area is loaded 
+			Then application object calls Magento\Framework\App\FrontControllerInterface::dispatch of requested area.
+	step 6: All routers are iterated to match request. The router that matches the request returns instance of ActionController. When FrontController gets instance of action controller it calls dispatch method on it
+	
+	step 7 : Action controller performs its task and returns instance of some implementation of ResultInterface
+	
+	Step 8 : FrontController just returns ResultInterface to Application Instance that renders the response
+	
+
+	
+	
+Responses , routers, :
+	https://belvg.com/blog/controllers-routers-and-responses-in-magento-2.html
