@@ -1,0 +1,47 @@
+difference between php5 and php7?
+difference between unset and unlink?
+difference between session_destroy and unset?
+how to resolve the session sent errors?
+if cookies is disable in the user system then session will work...?
+diff between .htaccess and php.ini?
+how and why?
+what are the parameters for mail_to function in php?
+what are different types of errors in the php?
+how to handle the exception?
+what is the difference final and finally keywords?
+how to debug the code in the producion?
+diff between == &  === ?
+what is the size of float variable? 4 bytes
+what is the diffence between while and dowhile?
+when to use the foreach and for loops?
+what is the difference between array_merge and array_combine?
+what is the use of the list function in php?
+what is the use of header function in php
+what is use of the pear and PECL in php?
+what is use of the composer in php?
+what is difference between composer install & composer update?
+ 
+ 
+oops:
+abstraction
+encapsulation
+self && $this?
+inheritance?
+difference between interface and abstract class?
+serialization?
+design patterns?
+Dependency injection?
+ 
+mysql:
+how many ways we can retreive the data?
+mysql_array and mysql_assoc?
+what are the indexes?
+what is composit key?
+differen between unique and nulll?
+different types of database engines?
+how to optimize the query?
+what is the difference between truncate and delete?
+if the auto_incement value is reached to full, then what error we will get?
+difference between pk and unique?
+difference between pk and fk?
+is it possible to delete the pk row if it is related to fk on other table?
