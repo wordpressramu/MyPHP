@@ -68,3 +68,53 @@ Delete duplicate rows
 	create temp table from original table with disctint rows ,drop original table and rename temp table as original table
 	
 	Delete duplicate rows using the ROW_NUMBER() function
+
+
+
+	
+WITH RECURSIVE category_path (id, title, path) AS
+(
+  SELECT id, title, title as path
+    FROM category
+    WHERE parent_id IS NULL
+  UNION ALL
+  SELECT c.id, c.title, CONCAT(cp.path, ' > ', c.title)
+    FROM category_path AS cp JOIN category AS c
+      ON cp.id = c.parent_id
+)
+SELECT * FROM category_path
+ORDER BY path;
+
+
+
+Rank 
+SELECT t.*, @rownum := @rownum + 1 AS rank
+  FROM category t, (SELECT @rownum := 0) r
+
+  
+ 
+DELETE duplciate rows 
+DELETE t1 FROM contacts t1
+INNER JOIN contacts t2 
+WHERE 
+    t1.id < t2.id AND 
+    t1.email = t2.email;
+
+
+DELETE FROM contacts 
+WHERE 
+    id IN (
+    SELECT 
+        id 
+    FROM (
+        SELECT 
+            id,
+            ROW_NUMBER() OVER (
+                PARTITION BY email
+                ORDER BY email) AS row_num
+        FROM 
+            contacts
+        
+    ) t
+    WHERE row_num > 1
+);
