@@ -118,3 +118,7 @@ WHERE
     ) t
     WHERE row_num > 1
 );
+
+update Table1 set "col" = (case "col" when 'male' then 'female' else 'male' end);
+UPDATE GENDER SET SEX = DECODE(SEX,'MALE','FEMALE','FEMALE','MALE');
+
