@@ -26,3 +26,8 @@ https://intellipaat.com/mediaFiles/2019/02/SQL-Commands-Cheat-Sheet.png
 
 
 https://www.ibm.com/support/knowledgecenter/en/SSZLC2_9.0.0/com.ibm.commerce.developer.doc/refs/rsdperformanceworkspaces.htm
+https://www.eversql.com/best-and-fastest-way-to-learn-sql/
+
+https://www.oracletutorial.com/
+
+https://whatisdbms.com/set-operations-in-sql-with-examples/
