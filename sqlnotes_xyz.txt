@@ -1,0 +1,177 @@
+The GROUP BY clause returns one row per group, it reduces the number of rows in the result set.
+The GROUP BY clause is often used with aggregate functions such as AVG(), COUNT(), MAX(), MIN() and SUM(). 
+The GROUP BY clause must contain only aggregates or grouping columns
+MySQL evaluates the GROUP BY clause after the FROM, WHERE and SELECT clauses and before the HAVING , ORDER BY and LIMIT clauses
+
+GROUP BY clause returns unique occurrences of values. It works like the DISTINCT operator 
+The expression which appears in the SELECT clause must be the same as the one in the GROUP BY clause.
+Standard SQL does not allow you to use an alias in the GROUP BY clause MySQL supports this
+MySQL also allows you to sort the groups in ascending or descending orders while the standard SQL does not.
+
+
+The HAVING clause is often used with the GROUP BY clause to filter groups based on a specified condition
+If the GROUP BY clause is omitted, the HAVING clause behaves like the WHERE clause
+The HAVING clause applies a filter condition to each group of rows, while the WHERE clause applies the filter condition to each individual row.
+MySQL evaluates the HAVING clause after the FROM, WHERE, SELECT and GROUP BY clauses and before ORDER BY, and LIMIT clauses.
+HAVING clause can use  logical operators such as OR and AND / BETWEEN
+
+HAVING clause filters groups of rows while the WHERE clause filters rows. This is a main difference between the HAVING and WHERE clauses
+
+
+
+=========================
+
+select c.customerName,o.customerNumber,count(*) from orders o join customers c on c.customerNumber=o.customerNumber GROUP BY o.customerNumber  
+ORDER BY `count(*)`  DESC
+
+
+get the total amount of all orders by status
+	SELECT o.status,o.orderNumber,sum(od.quantityOrdered * od.priceEach) as 'amount'  FROM orders o join orderdetails od on od.orderNumber=o.orderNumber GROUP BY o.status
+	
+	SELECT orderNumber, SUM(quantityOrdered * priceEach) AS total FROM     orderdetails GROUP BY      orderNumber
+	
+gets the total sales for each year.
+
+
+
+when you create new table from existin table It does not copy other database objects such as indexes, primary key constraint, foreign key constraints, triggers, etc., associated with the table
+
+
+===================================
+compare two tables to check missing rows while migration ?
+	http://www.mysqltutorial.org/compare-two-tables-to-find-unmatched-records-mysql.aspx
+	
+	
+	My Approach:
+		get primary keys from both tables and union all
+		group by primary key
+		list all primary keys having count =1 
+		
+		
+Find duplicate data in one columns
+	
+	SELECT col, COUNT(col) 	FROM table_name GROUP BY col HAVING COUNT(col) > 1;
+
+		
+
+Find duplicate rows data in multiple columns
+	SELECT col1, COUNT(col1),col2, COUNT(col2),... FROM table_name GROUP BY col1, col2, ... HAVING (COUNT(col1) > 1) AND (COUNT(col2) > 1) AND
+	
+
+Delete duplicate rows
+	Delete duplicate rows using DELETE JOIN statement
+		DELETE t1 FROM contacts t1 
+		INNER JOIN contacts t2  
+		WHERE t1.id < t2.id AND t1.email = t2.email;
+
+	Delete duplicate rows using an intermediate table
+	create temp table from original table with disctint rows ,drop original table and rename temp table as original table
+	
+	Delete duplicate rows using the ROW_NUMBER() function
+	
+	
+	
+WITH RECURSIVE category_path (id, title, path) AS
+(
+  SELECT id, title, title as path
+    FROM category
+    WHERE parent_id IS NULL
+  UNION ALL
+  SELECT c.id, c.title, CONCAT(cp.path, ' > ', c.title)
+    FROM category_path AS cp JOIN category AS c
+      ON cp.id = c.parent_id
+)
+SELECT * FROM category_path
+ORDER BY path;
+
+
+
+Rank 
+SELECT t.*, @rownum := @rownum + 1 AS rank
+  FROM category t, (SELECT @rownum := 0) r
+
+  
+ 
+DELETE duplciate rows 
+DELETE t1 FROM contacts t1
+INNER JOIN contacts t2 
+WHERE 
+    t1.id < t2.id AND 
+    t1.email = t2.email;
+
+
+DELETE FROM contacts 
+WHERE 
+    id IN (
+    SELECT 
+        id 
+    FROM (
+        SELECT 
+            id,
+            ROW_NUMBER() OVER (
+                PARTITION BY email
+                ORDER BY email) AS row_num
+        FROM 
+            contacts
+        
+    ) t
+    WHERE row_num > 1
+);
+
+update Table1 set "col" = (case "col" when 'male' then 'female' else 'male' end);
+UPDATE GENDER SET SEX = DECODE(SEX,'MALE','FEMALE','FEMALE','MALE');
+update salary set sex = IF (sex = "m", "f", "m");
+
+ifnull/COALESCE
+is NULL
+
+https://leetcode.com/articles/swap-salary/
+https://leetcode.com/articles/?category=database&search=
+
+
+
+delete from multiple table
+
+DELETE t1,t2 FROM t1 INNER JOIN  t2 ON t2.ref = t1.id  WHERE t1.id = 1;
+DELETE t1 FROM t1 LEFT JOIN  t2 ON t1.key = t2.key  WHERE t2.key is null;
+
+
+CASE value
+   WHEN value1 THEN result1
+   WHEN value2 THEN result2
+   …
+   [ELSE else_result]
+END
+
+
+CASE
+   WHEN expression1 THEN result1
+   WHEN expression2 THEN result2
+   …
+   [ELSE else_result]
+END
+
+
+SELECT IFNULL(NULL,'IFNULL function'); -- returns IFNULL function
+
+--if function
+IF(expr,if_true_expr,if_false_expr)
+SELECT IF(1 = 2,'true','false'); -- false
+
+IFNULL  – return the first argument if it is not NULL , otherwise returns the second argument.
+NULLIF– return NULL if the first argument is equal to the second argument, otherwise, returns the first argument.
+
+COALESCE – return the first non-NULL arguments, which is very handy for substitution ofNULL.
+GREATEST & LEAST – take n arguments and return the greatest and least values of the narguments respectively.
+ISNULL – return 1 if the argument is NULL, otherwise, return zero.
+
+
+
+
+--if statement
+IF credit > 50000 THEN
+        SET pCustomerLevel = 'PLATINUM';
+    END IF;
+
+
+
