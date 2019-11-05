@@ -1,0 +1,36 @@
+====Pywinauto
+comtypes==1.1.7
+pywin32==225
+pywinauto==0.6.8
+six==1.12.0
+==========pytest
+atomicwrites==1.3.0
+attrs==19.3.0
+colorama==0.4.1
+more-itertools==7.2.0
+packaging==19.2
+Pillow==6.2.1
+pluggy==0.13.0
+py==1.8.0
+pyparsing==2.4.2
+pytest==5.2.2
+wcwidth==0.1.7
+==================Allure
+allure-pytest==2.8.6
+allure-python-commons==2.8.6
+====================pyautogui
+Running setup.py install for pymsgbox ... done
+  Running setup.py install for PyTweening ... done
+  Running setup.py install for pyscreeze ... done
+  Running setup.py install for pyrect ... done
+  Running setup.py install for pygetwindow ... done
+  Running setup.py install for pyperclip ... done
+  Running setup.py install for mouseinfo ... done
+  Running setup.py install for pyautogui ... done
+=========================
+https://automatetheboringstuff.com/chapter18/
+https://buildmedia.readthedocs.org/media/pdf/pyautogui/latest/pyautogui.pdf
+https://pyautogui.readthedocs.io/en/latest/index.html
+https://towardsdatascience.com/automate-ui-testing-with-pyautogui-in-python-4a3762121973
+https://github.com/asweigart/pyautogui/pull/139/files
+https://medium.com/@lundbird/how-to-automate-windows-applications-with-autogui-626c7b452eed
